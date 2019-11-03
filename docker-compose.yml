@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 
 services:
     web:
@@ -11,12 +11,24 @@ services:
         networks:
             - code-network
     php:
+        build: ./php
         image: php:fpm
         volumes:
             - ./code:/code
             - ./log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
         networks:
             - code-network
+    db:
+        image: mysql:5.7
+        volumes:
+         - /var/lib/mysql
+        environment:
+         - MYSQL_ROOT_PASSWORD=123456
+         - MYSQL_DATABASE=database
+        networks:
+            - code-network
+        ports:
+            - "3306:3306"
 
 networks:
     code-network:
